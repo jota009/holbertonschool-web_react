@@ -17,6 +17,22 @@ interface Teacher {
   [key: string]: any;
 }
 
+// Function type interface - defines the shape of a function
+// This creates a contract that any function following this interface must:
+// - Accept exactly two string parameters (firstName and lastName)
+// - Return exactly one string value
+interface printTeacherFunction {
+  (firstName: string, lastName: string): string;
+}
+
+// Implementation of the printTeacher function - DEFINED FIRST
+// The function signature must match our interface exactly
+const printTeacher: printTeacherFunction = (firstName: string, lastName: string): string => {
+  // Extract the first character of firstName and combine with full lastName
+  // This demonstrates string manipulation with type safety
+  return `${firstName.charAt(0)}. ${lastName}`;
+};
+
 // Create teacher objects demonstrating different scenarios
 const teacher1: Teacher = {
   firstName: 'Sarah',
@@ -45,19 +61,26 @@ const teacher3: Teacher = {
   salary: 50000          // Yet another additional property
 };
 
-// Display the teachers
+// Display the teachers in console
 console.log('Teacher 1:', teacher1);
 console.log('Teacher 2:', teacher2);
 console.log('Teacher 3:', teacher3);
 
+// Demonstrate the printTeacher function
+console.log('\n=== Testing printTeacher Function ===');
+console.log('printTeacher("John", "Doe"):', printTeacher("John", "Doe"));
+console.log('printTeacher("Sarah", "Johnson"):', printTeacher("Sarah", "Johnson"));
+console.log('printTeacher("Mike", "Smith"):', printTeacher("Mike", "Smith"));
+
+// Demonstrate with our existing teacher objects
+console.log('\n=== Using printTeacher with our Teacher objects ===');
+console.log('Teacher 1 formatted:', printTeacher(teacher1.firstName, teacher1.lastName));
+console.log('Teacher 2 formatted:', printTeacher(teacher2.firstName, teacher2.lastName));
+console.log('Teacher 3 formatted:', printTeacher(teacher3.firstName, teacher3.lastName));
+
 // Demonstrate readonly behavior
 // Try to uncomment the line below - TypeScript will show an error!
 // teacher1.firstName = 'NewName'; // Error: Cannot assign to 'firstName' because it is a readonly property
-
-// Create HTML elements to display the teachers
-const container: HTMLDivElement = document.createElement('div');
-container.style.fontFamily = 'Arial, sans-serif';
-container.style.margin = '20px';
 
 // Function to create a teacher display card
 function createTeacherCard(teacher: Teacher, title: string): HTMLDivElement {
@@ -84,10 +107,55 @@ function createTeacherCard(teacher: Teacher, title: string): HTMLDivElement {
   return card;
 }
 
+// Create HTML elements to display the teachers
+const container: HTMLDivElement = document.createElement('div');
+container.style.fontFamily = 'Arial, sans-serif';
+container.style.margin = '20px';
+
 // Create cards for each teacher
 container.appendChild(createTeacherCard(teacher1, 'Teacher 1 (Full-time with experience)'));
 container.appendChild(createTeacherCard(teacher2, 'Teacher 2 (Part-time, no experience listed)'));
 container.appendChild(createTeacherCard(teacher3, 'Teacher 3 (With additional properties)'));
+
+// Add a section to demonstrate the printTeacher function visually
+const printTeacherSection: HTMLDivElement = document.createElement('div');
+printTeacherSection.style.border = '2px solid #007acc';
+printTeacherSection.style.margin = '20px 0';
+printTeacherSection.style.padding = '15px';
+printTeacherSection.style.backgroundColor = '#e8f4fd';
+printTeacherSection.style.borderRadius = '8px';
+
+const sectionTitle: HTMLHeadingElement = document.createElement('h3');
+sectionTitle.textContent = 'printTeacher Function Demonstration';
+sectionTitle.style.color = '#007acc';
+printTeacherSection.appendChild(sectionTitle);
+
+// Demonstrate the function with our teachers
+const examples = [
+  { teacher: teacher1, description: 'Full-time teacher' },
+  { teacher: teacher2, description: 'Part-time teacher' },
+  { teacher: teacher3, description: 'Teacher with additional properties' }
+];
+
+examples.forEach(({ teacher, description }) => {
+  const exampleDiv: HTMLDivElement = document.createElement('div');
+  exampleDiv.style.margin = '10px 0';
+  exampleDiv.style.padding = '8px';
+  exampleDiv.style.backgroundColor = '#ffffff';
+  exampleDiv.style.borderRadius = '4px';
+
+  // Now printTeacher is definitely defined and available here
+  const formatted = printTeacher(teacher.firstName, teacher.lastName);
+  exampleDiv.innerHTML = `
+    <strong>${description}:</strong><br>
+    Input: "${teacher.firstName}", "${teacher.lastName}"<br>
+    Output: <em>${formatted}</em>
+  `;
+
+  printTeacherSection.appendChild(exampleDiv);
+});
+
+container.appendChild(printTeacherSection);
 
 // Append to document body
 document.body.appendChild(container);

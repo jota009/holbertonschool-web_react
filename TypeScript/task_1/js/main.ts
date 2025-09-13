@@ -33,6 +33,48 @@ const printTeacher: printTeacherFunction = (firstName: string, lastName: string)
   return `${firstName.charAt(0)}. ${lastName}`;
 };
 
+// Interface for the StudentClass constructor
+// This defines what parameters are needed to create a new StudentClass instance
+interface StudentClassConstructor {
+  new (firstName: string, lastName: string): StudentClassInterface;
+}
+
+// Interface for the StudentClass itself
+// This defines what methods and properties instances of StudentClass must have
+interface StudentClassInterface {
+  firstName: string;
+  lastName: string;
+  workOnHomework(): string;
+  displayName(): string;
+}
+
+// Implementation of the StudentClass
+// The class must satisfy both the constructor interface and the class interface
+class StudentClass implements StudentClassInterface {
+  // Properties that will hold the student's data
+  firstName: string;
+  lastName: string;
+
+  // Constructor that matches our StudentClassConstructor interface
+  // It takes two string parameters and initializes the instance properties
+  constructor(firstName: string, lastName: string) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  // Method that returns a string indicating the student is working
+  // This demonstrates how classes can encapsulate behavior, not just data
+  workOnHomework(): string {
+    return "Currently working";
+  }
+
+  // Method that returns the student's first name
+  // This shows how classes can provide controlled access to their data
+  displayName(): string {
+    return this.firstName;
+  }
+}
+
 // Create teacher objects demonstrating different scenarios
 const teacher1: Teacher = {
   firstName: 'Sarah',
@@ -61,6 +103,11 @@ const teacher3: Teacher = {
   salary: 50000          // Yet another additional property
 };
 
+// Create StudentClass instances - DEFINED EARLY so they're available throughout the file
+const student1: StudentClassInterface = new StudentClass("Alice", "Johnson");
+const student2: StudentClassInterface = new StudentClass("Bob", "Smith");
+const student3: StudentClassInterface = new StudentClass("Carol", "Davis");
+
 // Display the teachers in console
 console.log('Teacher 1:', teacher1);
 console.log('Teacher 2:', teacher2);
@@ -77,6 +124,23 @@ console.log('\n=== Using printTeacher with our Teacher objects ===');
 console.log('Teacher 1 formatted:', printTeacher(teacher1.firstName, teacher1.lastName));
 console.log('Teacher 2 formatted:', printTeacher(teacher2.firstName, teacher2.lastName));
 console.log('Teacher 3 formatted:', printTeacher(teacher3.firstName, teacher3.lastName));
+
+// Demonstrate StudentClass functionality
+console.log('\n=== StudentClass Demonstration ===');
+
+// Test all the methods defined in our interface using our pre-created student instances
+console.log('Student 1 display name:', student1.displayName());
+console.log('Student 1 work status:', student1.workOnHomework());
+console.log('Student 2 display name:', student2.displayName());
+console.log('Student 2 work status:', student2.workOnHomework());
+console.log('Student 3 display name:', student3.displayName());
+console.log('Student 3 work status:', student3.workOnHomework());
+
+// Show how we can access properties directly (since they're public)
+console.log('\n=== Student Object Properties ===');
+console.log('Student 1 full info:', { firstName: student1.firstName, lastName: student1.lastName });
+console.log('Student 2 full info:', { firstName: student2.firstName, lastName: student2.lastName });
+console.log('Student 3 full info:', { firstName: student3.firstName, lastName: student3.lastName });
 
 // Demonstrate readonly behavior
 // Try to uncomment the line below - TypeScript will show an error!
@@ -156,6 +220,64 @@ examples.forEach(({ teacher, description }) => {
 });
 
 container.appendChild(printTeacherSection);
+
+// Add visual demonstration for StudentClass
+const studentSection: HTMLDivElement = document.createElement('div');
+studentSection.style.border = '2px solid #28a745';
+studentSection.style.margin = '20px 0';
+studentSection.style.padding = '15px';
+studentSection.style.backgroundColor = '#d4edda';
+studentSection.style.borderRadius = '8px';
+
+const studentSectionTitle: HTMLHeadingElement = document.createElement('h3');
+studentSectionTitle.textContent = 'StudentClass Implementation Demonstration';
+studentSectionTitle.style.color = '#155724';
+studentSection.appendChild(studentSectionTitle);
+
+// Create student instances to demonstrate - using our already created students
+const demoStudents = [
+  { student: student1, description: 'First student example' },
+  { student: student2, description: 'Second student example' },
+  { student: student3, description: 'Third student example' }
+];
+
+demoStudents.forEach(({ student, description }) => {
+  const studentCard: HTMLDivElement = document.createElement('div');
+  studentCard.style.margin = '10px 0';
+  studentCard.style.padding = '12px';
+  studentCard.style.backgroundColor = '#ffffff';
+  studentCard.style.border = '1px solid #28a745';
+  studentCard.style.borderRadius = '6px';
+
+  studentCard.innerHTML = `
+    <strong>${description}:</strong><br>
+    <em>Constructor input:</em> "${student.firstName}", "${student.lastName}"<br>
+    <em>displayName() returns:</em> ${student.displayName()}<br>
+    <em>workOnHomework() returns:</em> "${student.workOnHomework()}"<br>
+    <em>Direct property access:</em> firstName="${student.firstName}", lastName="${student.lastName}"
+  `;
+
+  studentSection.appendChild(studentCard);
+});
+
+// Add an explanation section about the interfaces
+const explanationDiv: HTMLDivElement = document.createElement('div');
+explanationDiv.style.margin = '15px 0';
+explanationDiv.style.padding = '10px';
+explanationDiv.style.backgroundColor = '#f8f9fa';
+explanationDiv.style.borderLeft = '4px solid #28a745';
+explanationDiv.style.fontSize = '14px';
+
+explanationDiv.innerHTML = `
+  <strong>Interface Design:</strong><br>
+  • <em>StudentClassConstructor</em> - defines how to create instances<br>
+  • <em>StudentClassInterface</em> - defines what instances can do<br>
+  • The class <em>implements</em> the interface, ensuring type safety<br>
+  • All methods and properties are guaranteed by TypeScript to exist
+`;
+
+studentSection.appendChild(explanationDiv);
+container.appendChild(studentSection);
 
 // Append to document body
 document.body.appendChild(container);

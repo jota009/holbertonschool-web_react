@@ -1,62 +1,62 @@
 // Define the Student interface
 interface Student {
-    firstName: string;
-    lastName: string;
-    age: number;
-    location: string;
-  }
+  firstName: string;
+  lastName: string;
+  age: number;
+  location: string;
+}
 
-  // Create two student variables
-  const student1: Student = {
-    firstName: "John",
-    lastName: "Doe",
-    age: 20,
-    location: "New York"
-  };
+// Create two student variables
+const student1: Student = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 20,
+  location: "New York"
+};
 
-  const student2: Student = {
-    firstName: "Jane",
-    lastName: "Smith",
-    age: 22,
-    location: "California"
-  };
+const student2: Student = {
+  firstName: "Jane",
+  lastName: "Smith",
+  age: 22,
+  location: "Los Angeles"
+};
 
-  // Store students in an array
-  const studentsList: Student[] = [student1, student2];
+// Create an array containing both students
+const studentsList: Student[] = [student1, student2];
 
-  // Create and render the table using Vanilla JavaScript
-  const body: HTMLBodyElement = document.getElementsByTagName("body")[0];
-  const table: HTMLTableElement = document.createElement("table");
-  const tableHead: HTMLTableSectionElement = document.createElement("thead");
-  const tableBody: HTMLTableSectionElement = document.createElement("tbody");
+// Create and render the table using Vanilla JavaScript
+// Create table element
+const table: HTMLTableElement = document.createElement('table');
+table.style.border = '1px solid black';
+table.style.borderCollapse = 'collapse';
 
-  // Create table header
-  const headerRow: HTMLTableRowElement = document.createElement("tr");
-  const firstNameHeader: HTMLTableCellElement = document.createElement("th");
-  const locationHeader: HTMLTableCellElement = document.createElement("th");
+// Create table header
+const headerRow: HTMLTableRowElement = table.insertRow();
+const firstNameHeader: HTMLTableCellElement = headerRow.insertCell();
+const locationHeader: HTMLTableCellElement = headerRow.insertCell();
 
-  firstNameHeader.textContent = "First Name";
-  locationHeader.textContent = "Location";
+firstNameHeader.innerHTML = '<strong>First Name</strong>';
+locationHeader.innerHTML = '<strong>Location</strong>';
+firstNameHeader.style.border = '1px solid black';
+firstNameHeader.style.padding = '8px';
+locationHeader.style.border = '1px solid black';
+locationHeader.style.padding = '8px';
 
-  headerRow.appendChild(firstNameHeader);
-  headerRow.appendChild(locationHeader);
-  tableHead.appendChild(headerRow);
+// Loop through studentsList and append rows to table
+studentsList.forEach((student: Student) => {
+  const row: HTMLTableRowElement = table.insertRow();
+  const firstNameCell: HTMLTableCellElement = row.insertCell();
+  const locationCell: HTMLTableCellElement = row.insertCell();
 
-  // Create table rows for each student
-  studentsList.forEach((student: Student) => {
-    const row: HTMLTableRowElement = document.createElement("tr");
-    const firstNameCell: HTMLTableCellElement = document.createElement("td");
-    const locationCell: HTMLTableCellElement = document.createElement("td");
+  firstNameCell.textContent = student.firstName;
+  locationCell.textContent = student.location;
 
-    firstNameCell.textContent = student.firstName;
-    locationCell.textContent = student.location;
+  // Add styling
+  firstNameCell.style.border = '2px solid black';
+  firstNameCell.style.padding = '10px';
+  locationCell.style.border = '2px solid black';
+  locationCell.style.padding = '10px';
+});
 
-    row.appendChild(firstNameCell);
-    row.appendChild(locationCell);
-    tableBody.appendChild(row);
-  });
-
-  // Assemble the table
-  table.appendChild(tableHead);
-  table.appendChild(tableBody);
-  body.appendChild(table);
+// Append table to document body
+document.body.appendChild(table);

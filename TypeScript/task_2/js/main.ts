@@ -155,10 +155,12 @@ conceptsDiv.innerHTML = `
   • <em>Union Types:</em> salary parameter accepts number | string<br>
   • <em>Type Guards:</em> typeof checks determine runtime behavior<br>
   • <em>Type Predicates:</em> isDirector() function with "employee is Director" syntax<br>
+  • <em>String Literal Types:</em> Subjects type allows only 'Math' | 'History'<br>
   • <em>Polymorphism:</em> Same interface methods, different implementations<br>
   • <em>Factory Pattern:</em> createEmployee function creates appropriate type<br>
   • <em>Type Assertions:</em> as Director/Teacher for accessing specific methods<br>
-  • <em>Function Specialization:</em> executeWork() calls type-specific methods safely
+  • <em>Function Specialization:</em> executeWork() calls type-specific methods safely<br>
+  • <em>Precise Type Constraints:</em> teachClass() prevents invalid subject values
 `;
 
 employeeSection.appendChild(conceptsDiv);
